@@ -25,7 +25,6 @@
 
 namespace Markov
 {
-	using ProtoBuf;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -34,15 +33,11 @@ namespace Markov
 	/// <summary>
 	/// Builds and walks interconnected states based on a weighted probability.
 	/// </summary>
-	[ProtoContract]
     public class MarkovChain
     {
-		[ProtoMember(1)]
 		private readonly int order;
-
-		[ProtoMember(2)]
+		
 		private readonly Dictionary<string, Dictionary<char, int>> items = new Dictionary<string, Dictionary<char, int>>();
-		[ProtoMember(3)]
 		private readonly Dictionary<string, int> terminals = new Dictionary<string, int>();
 
 		[Obsolete]

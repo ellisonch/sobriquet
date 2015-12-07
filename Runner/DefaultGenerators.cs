@@ -1,5 +1,4 @@
-﻿using ProtoBuf;
-using Sobriquet;
+﻿using Sobriquet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,16 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Runner {
-	[ProtoContract]
 	internal class DefaultGenerators {
-		private static string _serializedFileName = @"D:\prog\Sobriquet\defaultGen.dat";
-		private static int _order = 6;
+		private static string _maleFirstNamesFileName = @"D:\prog\Sobriquet\names.data\dist.male.first";
+		private static string _femaleFirstNamesFileName = @"D:\prog\Sobriquet\names.data\dist.female.first";
+		private static string _lastNamesFileName = @"D:\prog\Sobriquet\names.data\dist.all.last";
 
-		[ProtoMember(1)]
+		private static int _order = 5;
+
 		private Generator _maleFirstGenerator;
-		[ProtoMember(2)]
 		private Generator _femaleFirstGenerator;
-		[ProtoMember(3)]
 		private Generator _lastGenerator;
 
 		[Obsolete]
@@ -66,45 +64,20 @@ namespace Runner {
 
 
 		private static DefaultGenerators LoadFromData() {
-			var maleFirstNames = @"D:\prog\Sobriquet\dist.male.first";
-			var femaleFirstNames = @"D:\prog\Sobriquet\dist.female.first";
-			var lastNames = @"D:\prog\Sobriquet\dist.all.last";
-
-			var wns = FromNameTabWeightFile(maleFirstNames);
-			var maleFirstGenerator = new Generator(_order, wns);
-
-			wns = FromNameTabWeightFile(femaleFirstNames);
-			var femaleFirstGenerator = new Generator(_order, wns);
-
-			wns = FromNameTabWeightFile(lastNames);
-			var lastGenerator = new Generator(_order, wns);
-
+			var maleFirstGenerator = Generate(_order, _maleFirstNamesFileName);
+			var femaleFirstGenerator = Generate(_order, _femaleFirstNamesFileName);
+			var lastGenerator = Generate(_order, _lastNamesFileName);
+			
 			var dg = new DefaultGenerators(maleFirstGenerator, femaleFirstGenerator, lastGenerator);
-			// formatter.Serialize(, fn_generator);
 			return dg;
 		}
 
-		private static DefaultGenerators LoadFromDisk() {
-			//BinaryFormatter formatter = new BinaryFormatter();
-			//var binaryFile = new FileStream(_serializedFileName, FileMode.Open);
-
-			//return (DefaultGenerators)formatter.Deserialize(binaryFile);
-			DefaultGenerators dg;
-			using (var file = File.OpenRead(_serializedFileName)) {
-				dg = Serializer.Deserialize<DefaultGenerators>(file);
-			}
-			return dg;
+		private static Generator Generate(int order, string filename) {
+			var wns = FromNameTabWeightFile(filename);
+			var generator = new Generator(order, wns);
+			return generator;
 		}
-		private static void SerializeToDisk(DefaultGenerators dg) {
-			//BinaryFormatter formatter = new BinaryFormatter();
-			//var binaryFile = new FileStream(_serializedFileName, FileMode.OpenOrCreate);
-
-			//formatter.Serialize(binaryFile, dg);
-			using (var file = File.Create(_serializedFileName)) {
-				Serializer.Serialize(file, dg);
-			}
-		}
-
+		
 		public static IEnumerable<WeightedName> FromNameTabWeightFile(string filename) {
 			var file = new System.IO.StreamReader(filename);
 
