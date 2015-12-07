@@ -35,8 +35,8 @@ namespace Markov
     {
 		private readonly int order;
 		
-		private readonly Dictionary<string, Dictionary<char, int>> items = new Dictionary<string, Dictionary<char, int>>();
-		private readonly Dictionary<string, int> terminals = new Dictionary<string, int>();
+		private readonly Dictionary<ChainState, Dictionary<char, int>> items = new Dictionary<ChainState, Dictionary<char, int>>();
+		private readonly Dictionary<ChainState, int> terminals = new Dictionary<ChainState, int>();
 		
 		/// <summary>
 		/// Initializes a new instance of the MarkovChain class.
@@ -65,39 +65,10 @@ namespace Markov
         /// </summary>
         /// <param name="items">The items to add to the generator.</param>
         /// <param name="weight">The weight at which to add the items.</param>
-        public void Add(string items, int weight)
-        {
-			//int starti = 0;
-			//int endi = 0;
-
-			//         // Queue<char> previous = new Queue<char>();
-
-			//         // foreach (var item in items)
-			//for (var i = 0; i < items.Length; i++) {
-			//	char item = items[i];
-			//	var key = items.Substring(starti, endi);
-
-			//             this.Add(key, item, weight);
-
-			//             // previous.Enqueue(item);
-			//	endi++;
-			//	if ((endi - starti) > this.order) {
-			//		// if (previous.Count > this.order)
-			//		// {
-			//		// previous.Dequeue();
-			//		starti++;
-			//             }
-			//         }
-
-			//// var terminalKey = new string(previous.ToArray());
-			//var terminalKey = items.Substring(starti, endi);
-
-			//this.terminals[terminalKey] = this.terminals.ContainsKey(terminalKey)
-			//             ? weight + this.terminals[terminalKey]
-			//             : weight;
+        public void Add(string items, int weight) {
 			Queue<char> previous = new Queue<char>();
 			foreach (var item in items) {
-				var key = new string(previous.ToArray());
+				var key = new ChainState(previous);
 
 				this.Add(key, item, weight);
 
@@ -107,37 +78,13 @@ namespace Markov
 				}
 			}
 
-			var terminalKey = new string(previous.ToArray());
+			var terminalKey = new ChainState(previous);
 			this.terminals[terminalKey] = this.terminals.ContainsKey(terminalKey)
 				? weight + this.terminals[terminalKey]
 				: weight;
 		}
 
-        /// <summary>
-        /// Adds the item to the generator, with the specified state preceding it.
-        /// </summary>
-        /// <param name="state">The state preceding the item.</param>
-        /// <param name="next">The item to add.</param>
-        /// <remarks>
-        /// See <see cref="Markov.MarkovChain.Add(string, char, int)"/> for remarks.
-        /// </remarks>
-        public void Add(string state, char next)
-        {
-            this.Add(state, next, 1);
-        }
-		
-        /// <summary>
-        /// Adds the item to the generator, with the specified state preceding it and the specified weight.
-        /// </summary>
-        /// <param name="state">The state preceding the item.</param>
-        /// <param name="next">The item to add.</param>
-        /// <param name="weight">The weight of the item to add.</param>
-        /// <remarks>
-        /// This adds the state as-is.  The state may not be reachable if, for example, the
-        /// number of items in the state is greater than the order of the generator, or if the
-        /// combination of items is not available in the other states of the generator.
-        /// </remarks>
-        public void Add(string state, char next, int weight)
+        private void Add(ChainState state, char next, int weight)
         {
             Dictionary<char, int> weights;
             if (!this.items.TryGetValue(state, out weights))
@@ -271,7 +218,7 @@ namespace Markov
                     state.Dequeue();
                 }
 
-                var key = new string(state.ToArray());
+				var key = new ChainState(state);
 
                 Dictionary<char, int> weights;
                 if (!this.items.TryGetValue(key, out weights))

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="MarkovChain.cs" />
     <Compile Include="IRandom.cs" />
+    <Compile Include="ChainState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomWrapper.cs" />
     <Compile Include="RandomNumberGeneratorWrapper.cs" />
