@@ -27,11 +27,11 @@ namespace Markov
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Security.Cryptography;
-
+	using System.Text;
 	/// <summary>
 	/// Builds and walks interconnected states based on a weighted probability.
 	/// </summary>
-    public class MarkovChain
+	public class MarkovChain
     {
 		private readonly int order;
 		
@@ -271,12 +271,14 @@ namespace Markov
 		/// <param name="rand">The random number source for the chain.</param>
 		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
 		public string Chain(string previous, IRandom rand) {
-			return new string(ChainAux(previous, rand).ToArray());
+			return ChainAux(previous, rand);
 		}
 
         
-        private IEnumerable<char> ChainAux(string previous, IRandom rand)
+        private string ChainAux(string previous, IRandom rand)
         {
+			StringBuilder result = new StringBuilder();
+
             Queue<char> state = new Queue<char>(previous);
             while (true)
             {
@@ -290,7 +292,7 @@ namespace Markov
                 Dictionary<char, int> weights;
                 if (!this.items.TryGetValue(key, out weights))
                 {
-                    yield break;
+					return result.ToString();
                 }
 
                 int terminalWeight;
@@ -301,7 +303,7 @@ namespace Markov
 
                 if (value > total)
                 {
-                    yield break;
+					return result.ToString();
                 }
 
                 var currentWeight = 0;
@@ -310,7 +312,8 @@ namespace Markov
                     currentWeight += nextItem.Value;
                     if (currentWeight >= value)
                     {
-                        yield return nextItem.Key;
+						result.Append(nextItem.Key);
+                        // yield return nextItem.Key;
                         state.Enqueue(nextItem.Key);
                         break;
                     }
