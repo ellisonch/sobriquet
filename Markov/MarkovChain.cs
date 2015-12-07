@@ -59,16 +59,7 @@ namespace Markov
 
             this.order = order;
         }
-
-        /// <summary>
-        /// Adds the items to the generator with a weight of one.
-        /// </summary>
-        /// <param name="items">The items to add to the generator.</param>
-        public void Add(string items)
-        {
-            this.Add(items, 1);
-        }
-
+		
         /// <summary>
         /// Adds the items to the generator with the weight specified.
         /// </summary>
@@ -76,25 +67,51 @@ namespace Markov
         /// <param name="weight">The weight at which to add the items.</param>
         public void Add(string items, int weight)
         {
-            Queue<char> previous = new Queue<char>();
-            foreach (var item in items)
-            {
-                var key = new string(previous.ToArray());
+			//int starti = 0;
+			//int endi = 0;
 
-                this.Add(key, item, weight);
+			//         // Queue<char> previous = new Queue<char>();
 
-                previous.Enqueue(item);
-                if (previous.Count > this.order)
-                {
-                    previous.Dequeue();
-                }
-            }
+			//         // foreach (var item in items)
+			//for (var i = 0; i < items.Length; i++) {
+			//	char item = items[i];
+			//	var key = items.Substring(starti, endi);
 
-            var terminalKey = new string(previous.ToArray());
-            this.terminals[terminalKey] = this.terminals.ContainsKey(terminalKey)
-                ? weight + this.terminals[terminalKey]
-                : weight;
-        }
+			//             this.Add(key, item, weight);
+
+			//             // previous.Enqueue(item);
+			//	endi++;
+			//	if ((endi - starti) > this.order) {
+			//		// if (previous.Count > this.order)
+			//		// {
+			//		// previous.Dequeue();
+			//		starti++;
+			//             }
+			//         }
+
+			//// var terminalKey = new string(previous.ToArray());
+			//var terminalKey = items.Substring(starti, endi);
+
+			//this.terminals[terminalKey] = this.terminals.ContainsKey(terminalKey)
+			//             ? weight + this.terminals[terminalKey]
+			//             : weight;
+			Queue<char> previous = new Queue<char>();
+			foreach (var item in items) {
+				var key = new string(previous.ToArray());
+
+				this.Add(key, item, weight);
+
+				previous.Enqueue(item);
+				if (previous.Count > this.order) {
+					previous.Dequeue();
+				}
+			}
+
+			var terminalKey = new string(previous.ToArray());
+			this.terminals[terminalKey] = this.terminals.ContainsKey(terminalKey)
+				? weight + this.terminals[terminalKey]
+				: weight;
+		}
 
         /// <summary>
         /// Adds the item to the generator, with the specified state preceding it.
@@ -133,40 +150,7 @@ namespace Markov
                 ? weight + weights[next]
                 : weight;
         }
-
-        /// <summary>
-        /// Gets the items from the generator that follow from an empty state.
-        /// </summary>
-        /// <returns>A dictionary of the items and their weight.</returns>
-        public Dictionary<char, int> GetInitialStates()
-        {
-            var startState = "";
-
-            Dictionary<char, int> weights;
-            if (this.items.TryGetValue(startState, out weights))
-            {
-                return new Dictionary<char, int>(weights);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the items from the generator that follow from the specified state preceding it.
-        /// </summary>
-        /// <param name="state">The state preceding the items of interest.</param>
-        /// <returns>A dictionary of the items and their weight.</returns>
-        public Dictionary<char, int> GetNextStates(string state)
-        {
-            Dictionary<char, int> weights;
-            if (this.items.TryGetValue(state, out weights))
-            {
-                return new Dictionary<char, int>(weights);
-            }
-
-            return null;
-        }
-
+		
         /// <summary>
         /// Randomly walks the chain.
         /// </summary>

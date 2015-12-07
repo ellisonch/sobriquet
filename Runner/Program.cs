@@ -12,11 +12,11 @@ namespace Runner {
 		static void Main(string[] args) {
 			var dg = DefaultGenerators.Startup();
 
-			for (int i = 0; i < 40; i++) {
-				// var name = new string(chain.Chain(_rand).ToArray());
-				var name = InitCaps(dg.FemaleFirstName.NextUnique()) + " " + InitCaps(dg.LastName.NextUnique());
-				Console.WriteLine("{0}", name);
-			}
+			//for (int i = 0; i < 40; i++) {
+			//	// var name = new string(chain.Chain(_rand).ToArray());
+			//	var name = InitCaps(dg.FemaleFirstName.NextUnique()) + " " + InitCaps(dg.LastName.NextUnique());
+			//	Console.WriteLine("{0}", name);
+			//}
 			Console.Read();
 		}
 		

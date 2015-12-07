@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24606.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sobriquet", "Sobriquet\Sobriquet.csproj", "{D14428C7-4692-46E8-A01A-61A9E422784B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BA051DA7-AC13-4709-8829-4DC82DECCF4B} = {BA051DA7-AC13-4709-8829-4DC82DECCF4B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{F1F6BD54-9885-4F9A-9999-734839261DFA}"
 EndProject

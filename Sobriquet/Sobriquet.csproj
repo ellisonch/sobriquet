@@ -45,7 +45,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\markov\src\cs\Markov\Markov.csproj">
+    <ProjectReference Include="..\Markov\Markov.csproj">
       <Project>{ba051da7-ac13-4709-8829-4dc82deccf4b}</Project>
       <Name>Markov</Name>
     </ProjectReference>
