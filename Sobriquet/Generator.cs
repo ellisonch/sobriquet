@@ -1,26 +1,17 @@
-﻿using ProtoBuf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Sobriquet {
-	[ProtoContract]
 	public class Generator {
-		[ProtoMember(1)]
 		private int _seed = 0;
-		[ProtoMember(2)]
 		private Markov.MarkovChain _chain;
-
-		[ProtoMember(3)]
+		
 		private Dictionary<string, bool> _originalNames = new Dictionary<string, bool>();
-		[ProtoMember(4)]
 		private Dictionary<string, bool> _seenNames = new Dictionary<string, bool>();
-
-		[Obsolete]
-		private Generator() { }
-
+		
 		public Generator(int order, IEnumerable<WeightedName> names) {
 			_chain = new Markov.MarkovChain(order);
 			foreach (var wn in names) {

@@ -20,9 +20,7 @@ namespace Runner {
 		private Generator _maleFirstGenerator;
 		private Generator _femaleFirstGenerator;
 		private Generator _lastGenerator;
-
-		[Obsolete]
-		private DefaultGenerators() { }
+		
 		public DefaultGenerators(Generator maleFirstGenerator, Generator femaleFirstGenerator, Generator lnGenerator) {
 			_maleFirstGenerator = maleFirstGenerator;
 			_femaleFirstGenerator = femaleFirstGenerator;

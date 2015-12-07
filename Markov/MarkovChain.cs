@@ -39,10 +39,7 @@ namespace Markov
 		
 		private readonly Dictionary<string, Dictionary<char, int>> items = new Dictionary<string, Dictionary<char, int>>();
 		private readonly Dictionary<string, int> terminals = new Dictionary<string, int>();
-
-		[Obsolete]
-		private MarkovChain() { }
-
+		
 		/// <summary>
 		/// Initializes a new instance of the MarkovChain class.
 		/// </summary>
