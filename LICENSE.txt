@@ -21,9 +21,13 @@ SOFTWARE.
 
 
 ----------------------------------------------------------------------
+Public domain data about names from the 1990 United States Census is included
+and used.  Original data found at
+http://www.census.gov/topics/population/genealogy/data/1990_census/1990_census_namefiles.html
+----------------------------------------------------------------------
 Portions of this software (code building Markov Chains) are based on 
 code licensed under the following licenses:
---------------------------------
+----------------------------------------------------------------------
 
 The MIT License (MIT)
 
