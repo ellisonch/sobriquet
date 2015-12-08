@@ -27,14 +27,15 @@ namespace Markov {
 	using System.Linq;
 	using System.Security.Cryptography;
 	using System.Text;
+
 	/// <summary>
 	/// Builds and walks interconnected states based on a weighted probability.
 	/// </summary>
 	public class MarkovChain {
 		private readonly int order;
 
-		private readonly Dictionary<ChainState, Dictionary<char, int>> items = new Dictionary<ChainState, Dictionary<char, int>>();
-		private readonly Dictionary<ChainState, int> terminals = new Dictionary<ChainState, int>();
+		private readonly Dictionary<string, Dictionary<char, int>> items = new Dictionary<string, Dictionary<char, int>>();
+		private readonly Dictionary<string, int> terminals = new Dictionary<string, int>();
 
 		/// <summary>
 		/// Initializes a new instance of the MarkovChain class.
@@ -62,40 +63,53 @@ namespace Markov {
 		/// <param name="items">The items to add to the generator.</param>
 		/// <param name="weight">The weight at which to add the items.</param>
 		public void Add(string items, int weight) {
-			Queue<char> previous = new Queue<char>();
+			// Queue<char> previous = new Queue<char>();
+			int starti = 0;
+			int length = 0;
+			string previous = "";
+
 			foreach (var item in items) {
-				var key = new ChainState(previous);
+				var key = previous;
 
 				this.Add(key, item, weight);
-
-				previous.Enqueue(item);
-				if (previous.Count > this.order) {
-					previous.Dequeue();
+				
+				length++;
+				if (length > this.order) {
+					length--;
+					starti++;
 				}
+
+				previous = SafeSubstring(items, starti, length);
 			}
 
-			var terminalKey = new ChainState(previous);
+			var terminalKey = previous;
 			this.terminals[terminalKey] = this.terminals.ContainsKey(terminalKey)
 				? weight + this.terminals[terminalKey]
 				: weight;
 		}
 
-		private void Add(ChainState state, char next, int weight) {
+		private static string SafeSubstring(string text, int start, int length) {
+			return text.Length <= start ? ""
+				: text.Length - start <= length ? text.Substring(start)
+				: text.Substring(start, length);
+		}
+
+		private void Add(string state, char next, int weight) {
 			Dictionary<char, int> weights;
 			if (!this.items.TryGetValue(state, out weights)) {
 				weights = new Dictionary<char, int>();
 				this.items.Add(state, weights);
 			}
 
-			weights[next] = weights.ContainsKey(next)
-				? weight + weights[next]
-				: weight;
+			int oldWeight;
+			weights.TryGetValue(next, out oldWeight);
+			weights[next] = oldWeight + weight;
 		}
 
 		/// <summary>
 		/// Randomly walks the chain.
 		/// </summary>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain() {
 			return this.Chain("", new RandomWrapper(new Random()));
@@ -105,7 +119,7 @@ namespace Markov {
 		/// Randomly walks the chain.
 		/// </summary>
 		/// <param name="previous">The items preceding the first item in the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous) {
 			return this.Chain(previous, new RandomWrapper(new Random()));
 		}
@@ -114,7 +128,7 @@ namespace Markov {
 		/// Randomly walks the chain.
 		/// </summary>
 		/// <param name="seed">The seed for the random number generator, used as the random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain(int seed) {
 			return this.Chain("", new RandomWrapper(new Random(seed)));
@@ -125,7 +139,7 @@ namespace Markov {
 		/// </summary>
 		/// <param name="previous">The items preceding the first item in the chain.</param>
 		/// <param name="seed">The seed for the random number generator, used as the random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous, int seed) {
 			return this.Chain(previous, new RandomWrapper(new Random(seed)));
 		}
@@ -134,7 +148,7 @@ namespace Markov {
 		/// Randomly walks the chain.
 		/// </summary>
 		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain(Random rand) {
 			return this.Chain("", new RandomWrapper(rand));
@@ -145,7 +159,7 @@ namespace Markov {
 		/// </summary>
 		/// <param name="previous">The items preceding the first item in the chain.</param>
 		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous, Random rand) {
 			return this.Chain(previous, new RandomWrapper(rand));
 		}
@@ -154,7 +168,7 @@ namespace Markov {
 		/// Randomly walks the chain.
 		/// </summary>
 		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain(RandomNumberGenerator rand) {
 			return this.Chain("", new RandomNumberGeneratorWrapper(rand));
@@ -165,7 +179,7 @@ namespace Markov {
 		/// </summary>
 		/// <param name="previous">The items preceding the first item in the chain.</param>
 		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous, RandomNumberGenerator rand) {
 			return this.Chain(previous, new RandomNumberGeneratorWrapper(rand));
 		}
@@ -174,7 +188,7 @@ namespace Markov {
 		/// Randomly walks the chain.
 		/// </summary>
 		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain(IRandom rand) {
 			return this.Chain("", rand);
@@ -185,13 +199,8 @@ namespace Markov {
 		/// </summary>
 		/// <param name="previous">The items preceding the first item in the chain.</param>
 		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of the items chosen.</returns>
+		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous, IRandom rand) {
-			return ChainAux(previous, rand);
-		}
-
-
-		private string ChainAux(string previous, IRandom rand) {
 			StringBuilder result = new StringBuilder();
 
 			Queue<char> state = new Queue<char>(previous);
@@ -200,7 +209,7 @@ namespace Markov {
 					state.Dequeue();
 				}
 
-				var key = new ChainState(state);
+				var key = new string(state.ToArray());
 
 				Dictionary<char, int> weights;
 				if (!this.items.TryGetValue(key, out weights)) {
@@ -222,7 +231,6 @@ namespace Markov {
 					currentWeight += nextItem.Value;
 					if (currentWeight >= value) {
 						result.Append(nextItem.Key);
-						// yield return nextItem.Key;
 						state.Enqueue(nextItem.Key);
 						break;
 					}

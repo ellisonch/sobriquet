@@ -8,7 +8,7 @@ namespace Sobriquet {
 	public class Generator {
 		private int _seed = 0;
 		private Markov.MarkovChain _chain;
-		
+
 		private Dictionary<string, bool> _originalNames = new Dictionary<string, bool>();
 		private Dictionary<string, bool> _seenNames = new Dictionary<string, bool>();
 		
