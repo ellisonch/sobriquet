@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Runner {
 	class Program {
 		static void Main(string[] args) {
-			var dg = DefaultGenerators.Startup();
+			var dg = new DefaultGenerators();
 
 			for (int i = 0; i < 40; i++) {
 				// var name = new string(chain.Chain(_rand).ToArray());
