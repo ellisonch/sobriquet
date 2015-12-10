@@ -43,9 +43,9 @@
     <Compile Include="DefaultGenerators.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="WeightedName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

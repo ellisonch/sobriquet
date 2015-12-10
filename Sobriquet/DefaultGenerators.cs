@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Sobriquet {
 	public class DefaultGenerators {
-		private static Stopwatch _sw = new Stopwatch();
+		// private static Stopwatch _sw = new Stopwatch();
 
 		private readonly Generator _maleFirstGenerator;
 		private readonly Generator _femaleFirstGenerator;
@@ -26,7 +26,7 @@ namespace Sobriquet {
 			var femaleFirstGenerator = Generate(order, femaleFirstNamesFileName);
 			var lastGenerator = Generate(order, lastNamesFileName);
 			
-			Console.WriteLine("Creation took {0}ms", _sw.ElapsedMilliseconds);
+			// Console.WriteLine("Creation took {0}ms", _sw.ElapsedMilliseconds);
 			
 			_maleFirstGenerator = maleFirstGenerator;
 			_femaleFirstGenerator = femaleFirstGenerator;
@@ -45,9 +45,9 @@ namespace Sobriquet {
 
 		private static Generator Generate(int order, byte[] file) {
 			var wns = FromNameTabWeightFile(file);
-			_sw.Start();
+			// _sw.Start();
 			var generator = new Generator(order, wns);
-			_sw.Stop();
+			// _sw.Stop();
 			return generator;
 		}
 		
