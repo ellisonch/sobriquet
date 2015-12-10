@@ -112,7 +112,7 @@ namespace Markov {
 		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain() {
-			return this.Chain("", new RandomWrapper(new Random()));
+			return this.Chain("", new Random());
 		}
 
 		/// <summary>
@@ -121,7 +121,7 @@ namespace Markov {
 		/// <param name="previous">The items preceding the first item in the chain.</param>
 		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous) {
-			return this.Chain(previous, new RandomWrapper(new Random()));
+			return this.Chain(previous, new Random());
 		}
 
 		/// <summary>
@@ -131,7 +131,7 @@ namespace Markov {
 		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain(int seed) {
-			return this.Chain("", new RandomWrapper(new Random(seed)));
+			return this.Chain("", new Random(seed));
 		}
 
 		/// <summary>
@@ -141,7 +141,7 @@ namespace Markov {
 		/// <param name="seed">The seed for the random number generator, used as the random number source for the chain.</param>
 		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous, int seed) {
-			return this.Chain(previous, new RandomWrapper(new Random(seed)));
+			return this.Chain(previous, new Random(seed));
 		}
 
 		/// <summary>
@@ -151,9 +151,9 @@ namespace Markov {
 		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		/// <remarks>Assumes an empty starting state.</remarks>
 		public string Chain(Random rand) {
-			return this.Chain("", new RandomWrapper(rand));
+			return this.Chain("", rand);
 		}
-
+		
 		/// <summary>
 		/// Randomly walks the chain.
 		/// </summary>
@@ -161,46 +161,6 @@ namespace Markov {
 		/// <param name="rand">The random number source for the chain.</param>
 		/// <returns>An <see cref="string"/> of the items chosen.</returns>
 		public string Chain(string previous, Random rand) {
-			return this.Chain(previous, new RandomWrapper(rand));
-		}
-
-		/// <summary>
-		/// Randomly walks the chain.
-		/// </summary>
-		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="string"/> of the items chosen.</returns>
-		/// <remarks>Assumes an empty starting state.</remarks>
-		public string Chain(RandomNumberGenerator rand) {
-			return this.Chain("", new RandomNumberGeneratorWrapper(rand));
-		}
-
-		/// <summary>
-		/// Randomly walks the chain.
-		/// </summary>
-		/// <param name="previous">The items preceding the first item in the chain.</param>
-		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="string"/> of the items chosen.</returns>
-		public string Chain(string previous, RandomNumberGenerator rand) {
-			return this.Chain(previous, new RandomNumberGeneratorWrapper(rand));
-		}
-
-		/// <summary>
-		/// Randomly walks the chain.
-		/// </summary>
-		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="string"/> of the items chosen.</returns>
-		/// <remarks>Assumes an empty starting state.</remarks>
-		public string Chain(IRandom rand) {
-			return this.Chain("", rand);
-		}
-
-		/// <summary>
-		/// Randomly walks the chain.
-		/// </summary>
-		/// <param name="previous">The items preceding the first item in the chain.</param>
-		/// <param name="rand">The random number source for the chain.</param>
-		/// <returns>An <see cref="string"/> of the items chosen.</returns>
-		public string Chain(string previous, IRandom rand) {
 			StringBuilder result = new StringBuilder();
 
 			Queue<char> state = new Queue<char>(previous);
