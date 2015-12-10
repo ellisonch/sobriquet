@@ -51,7 +51,7 @@ namespace Sobriquet {
 			return generator;
 		}
 		
-		public static IEnumerable<WeightedName> FromNameTabWeightFile(byte[] bytes) {
+		private static IEnumerable<WeightedName> FromNameTabWeightFile(byte[] bytes) {
 			var file = new System.IO.StreamReader(new MemoryStream(bytes), Encoding.UTF8);
 
 			var names = new List<WeightedName>();
