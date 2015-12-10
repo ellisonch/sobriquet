@@ -11,10 +11,17 @@ namespace Sobriquet {
 
 		private Dictionary<string, bool> _originalNames = new Dictionary<string, bool>();
 		private Dictionary<string, bool> _seenNames = new Dictionary<string, bool>();
-		
-		public Generator(int order, IEnumerable<WeightedName> names) {
+
+		public Generator(int order, IEnumerable<string> names) {
 			_chain = new Markov.MarkovChain(order);
-			foreach (var wn in names) {
+			foreach (var name in names) {
+				_chain.Add(name, 1);
+				_originalNames[name] = true;
+			}
+		}
+		public Generator(int order, IEnumerable<WeightedName> wnames) {
+			_chain = new Markov.MarkovChain(order);
+			foreach (var wn in wnames) {
 				_chain.Add(wn.Name, wn.Weight);
 				_originalNames[wn.Name] = true;
 			}

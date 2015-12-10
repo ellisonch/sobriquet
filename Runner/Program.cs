@@ -10,13 +10,28 @@ using System.Threading.Tasks;
 namespace Runner {
 	class Program {
 		static void Main(string[] args) {
-			var dg = new DefaultGenerators();
+			var names = new List<string> {
+				"Carlos"
+				, "Charlotte"
+				, "Marley"
+			};
+			var namegen = new Sobriquet.Generator(3, names);
 
-			for (int i = 0; i < 40; i++) {
-				// var name = new string(chain.Chain(_rand).ToArray());
-				var name = InitCaps(dg.FemaleFirstName.NextUnique()) + " " + InitCaps(dg.LastName.NextUnique());
-				Console.WriteLine("{0}", name);
+			for (int i = 0; i < 5; i++) {
+				Console.WriteLine(namegen.Next());
 			}
+
+
+			var dg = new DefaultGenerators(5);
+			//Console.WriteLine(dg.MaleFirstName.Next() + " " + dg.LastName.Next());
+			for (int i = 0; i < 4; i++) {
+				Console.WriteLine(dg.MaleFirstName.Next() + " " + dg.LastName.Next());
+			}
+			//for (int i = 0; i < 40; i++) {
+			//	// var name = new string(chain.Chain(_rand).ToArray());
+			//	var name = InitCaps(dg.FemaleFirstName.NextUnique()) + " " + InitCaps(dg.LastName.NextUnique());
+			//	Console.WriteLine("{0}", name);
+			//}
 			Console.Read();
 		}
 		

@@ -9,23 +9,22 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Runner {
-	internal class DefaultGenerators {
-		private static int _order = 5;
+namespace Sobriquet {
+	public class DefaultGenerators {
 		private static Stopwatch _sw = new Stopwatch();
 
 		private readonly Generator _maleFirstGenerator;
 		private readonly Generator _femaleFirstGenerator;
 		private readonly Generator _lastGenerator;
 
-		public DefaultGenerators() {
+		public DefaultGenerators(int order) {
 			var maleFirstNamesFileName = Properties.Resources.dist_male;
 			var femaleFirstNamesFileName = Properties.Resources.dist_female;
 			var lastNamesFileName = Properties.Resources.dist_all;
 
-			var maleFirstGenerator = Generate(_order, maleFirstNamesFileName);
-			var femaleFirstGenerator = Generate(_order, femaleFirstNamesFileName);
-			var lastGenerator = Generate(_order, lastNamesFileName);
+			var maleFirstGenerator = Generate(order, maleFirstNamesFileName);
+			var femaleFirstGenerator = Generate(order, femaleFirstNamesFileName);
+			var lastGenerator = Generate(order, lastNamesFileName);
 			
 			Console.WriteLine("Creation took {0}ms", _sw.ElapsedMilliseconds);
 			
