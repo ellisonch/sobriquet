@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 namespace Sobriquet {
 	public class Generator {
 		private int _seed = 0;
-		private readonly Markov.MarkovChain _chain;
+		private readonly MarkovChain _chain;
 
 		private Dictionary<string, bool> _originalNames = new Dictionary<string, bool>();
 		private Dictionary<string, bool> _seenNames = new Dictionary<string, bool>();
 
 		public Generator(int order, IEnumerable<string> names) {
-			_chain = new Markov.MarkovChain(order);
+			_chain = new MarkovChain(order);
 			foreach (var name in names) {
 				_chain.Add(name, 1);
 				_originalNames[name] = true;
 			}
 		}
 		public Generator(int order, IEnumerable<WeightedName> wnames) {
-			_chain = new Markov.MarkovChain(order);
+			_chain = new MarkovChain(order);
 			foreach (var wn in wnames) {
 				_chain.Add(wn.Name, wn.Weight);
 				_originalNames[wn.Name] = true;

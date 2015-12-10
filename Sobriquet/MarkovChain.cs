@@ -21,7 +21,7 @@
 //  THE SOFTWARE.
 //-----------------------------------------------------------------------
 
-namespace Markov {
+namespace Sobriquet {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -31,7 +31,7 @@ namespace Markov {
 	/// <summary>
 	/// Builds and walks interconnected states based on a weighted probability.
 	/// </summary>
-	public class MarkovChain {
+	internal class MarkovChain {
 		private readonly int order;
 
 		private readonly Dictionary<string, Dictionary<char, int>> items = new Dictionary<string, Dictionary<char, int>>();

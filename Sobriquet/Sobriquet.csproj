@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DefaultGenerators.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="MarkovChain.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -49,12 +50,6 @@
     </Compile>
     <Compile Include="WeightedName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Markov\Markov.csproj">
-      <Project>{ba051da7-ac13-4709-8829-4dc82deccf4b}</Project>
-      <Name>Markov</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dist.all.last" />
