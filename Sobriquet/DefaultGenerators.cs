@@ -33,12 +33,21 @@ namespace Sobriquet {
 			_lastGenerator = lastGenerator;
 		}
 
+		/// <summary>
+		/// Generates male first names based on the 1990 census.
+		/// </summary>
 		public Generator MaleFirstName {
 			get { return _maleFirstGenerator; }
 		}
+		/// <summary>
+		/// Generates female first names based on the 1990 census.
+		/// </summary>
 		public Generator FemaleFirstName {
 			get { return _femaleFirstGenerator; }
 		}
+		/// <summary>
+		/// Generates last names based on the 1990 census.
+		/// </summary>
 		public Generator LastName {
 			get { return _lastGenerator; }
 		}

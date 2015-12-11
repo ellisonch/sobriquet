@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Sobriquet {
+	/// <summary>
+	/// Represents a name and associated weight (how many times that name counts).
+	/// </summary>
 	public struct WeightedName {
 		public string Name;
 		public int Weight;
