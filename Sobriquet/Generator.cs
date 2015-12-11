@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,12 @@ namespace Sobriquet {
 
 		private Dictionary<string, bool> _originalNames = new Dictionary<string, bool>();
 		private Dictionary<string, bool> _seenNames = new Dictionary<string, bool>();
+
+		public IEnumerable<string> OriginalNames {
+			get {
+				return _originalNames.Keys;
+			}
+		}
 
 		public Generator(int order, IEnumerable<string> names) {
 			_chain = new MarkovChain(order);
@@ -56,6 +63,10 @@ namespace Sobriquet {
 				}
 			}
 			return name;
+		}
+
+		public IEnumerable<string> AllRaw(int maxlen) {
+			return _chain.AllRaw(maxlen);
 		}
 	}
 }

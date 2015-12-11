@@ -32,10 +32,10 @@ namespace Sobriquet {
 	/// Builds and walks interconnected states based on a weighted probability.
 	/// </summary>
 	internal class MarkovChain {
-		private readonly int order;
+		private readonly int _order;
 
-		private readonly Dictionary<string, Dictionary<char, int>> items = new Dictionary<string, Dictionary<char, int>>();
-		private readonly Dictionary<string, int> terminals = new Dictionary<string, int>();
+		private readonly Dictionary<string, Dictionary<char, int>> _items = new Dictionary<string, Dictionary<char, int>>();
+		private readonly Dictionary<string, int> _terminals = new Dictionary<string, int>();
 
 		/// <summary>
 		/// Initializes a new instance of the MarkovChain class.
@@ -54,7 +54,7 @@ namespace Sobriquet {
 				throw new ArgumentOutOfRangeException("order");
 			}
 
-			this.order = order;
+			_order = order;
 		}
 
 		/// <summary>
@@ -74,7 +74,7 @@ namespace Sobriquet {
 				this.Add(key, item, weight);
 				
 				length++;
-				if (length > this.order) {
+				if (length > _order) {
 					length--;
 					starti++;
 				}
@@ -83,22 +83,16 @@ namespace Sobriquet {
 			}
 
 			var terminalKey = previous;
-			this.terminals[terminalKey] = this.terminals.ContainsKey(terminalKey)
-				? weight + this.terminals[terminalKey]
+			_terminals[terminalKey] = _terminals.ContainsKey(terminalKey)
+				? weight + _terminals[terminalKey]
 				: weight;
-		}
-
-		private static string SafeSubstring(string text, int start, int length) {
-			return text.Length <= start ? ""
-				: text.Length - start <= length ? text.Substring(start)
-				: text.Substring(start, length);
 		}
 
 		private void Add(string state, char next, int weight) {
 			Dictionary<char, int> weights;
-			if (!this.items.TryGetValue(state, out weights)) {
+			if (!_items.TryGetValue(state, out weights)) {
 				weights = new Dictionary<char, int>();
-				this.items.Add(state, weights);
+				_items.Add(state, weights);
 			}
 
 			int oldWeight;
@@ -165,19 +159,19 @@ namespace Sobriquet {
 
 			Queue<char> state = new Queue<char>(previous);
 			while (true) {
-				while (state.Count > this.order) {
+				while (state.Count > _order) {
 					state.Dequeue();
 				}
 
 				var key = new string(state.ToArray());
 
 				Dictionary<char, int> weights;
-				if (!this.items.TryGetValue(key, out weights)) {
+				if (!_items.TryGetValue(key, out weights)) {
 					return result.ToString();
 				}
 
 				int terminalWeight;
-				this.terminals.TryGetValue(key, out terminalWeight);
+				_terminals.TryGetValue(key, out terminalWeight);
 
 				var total = weights.Sum(w => w.Value);
 				var value = rand.Next(total + terminalWeight) + 1;
@@ -196,6 +190,62 @@ namespace Sobriquet {
 					}
 				}
 			}
+		}
+
+		internal IEnumerable<string> AllRaw(int maxlen) {
+			return AllRaw("", maxlen);
+		}
+		// TODO: need to try
+		internal IEnumerable<string> AllRaw(string prefix, int maxlen) {
+			if (prefix.Length > _order) {
+				throw new ArgumentException(string.Format("prefix should be fewer than {0} chars long", _order));
+			}
+
+			var queue = new Queue<string>();
+			queue.Enqueue(prefix);
+
+			while (queue.Count > 0) {
+				var current = queue.Dequeue();
+				if (current.Length > maxlen) {
+					continue;
+				}
+				var suffix = GetLast(current, _order);
+
+				// first, see if it's a possible terminal state and if so, return it
+				int terminalWeight;
+				_terminals.TryGetValue(suffix, out terminalWeight);
+				if (terminalWeight > 0) {
+					yield return current;
+				}
+
+				// next, enqueue all the possible extensions
+				Dictionary<char, int> weights;
+				if (!_items.TryGetValue(suffix, out weights)) {
+					// yield return current;
+					continue;
+				}
+				foreach (var kvp in weights) {
+					var nextChar = kvp.Key;
+					var weight = kvp.Value;
+					if (weight == 0) {
+						continue;
+					}
+					queue.Enqueue(current + nextChar);
+				}
+			}
+		}
+
+
+		private static string SafeSubstring(string text, int start, int length) {
+			return text.Length <= start ? ""
+				: text.Length - start <= length ? text.Substring(start)
+				: text.Substring(start, length);
+		}
+		private string GetLast(string prefix, int length) {
+			if (prefix.Length <= length) {
+				return prefix;
+			}
+			return prefix.Substring(prefix.Length - length);
 		}
 	}
 }

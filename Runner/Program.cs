@@ -32,6 +32,22 @@ namespace Runner {
 			//	var name = InitCaps(dg.FemaleFirstName.NextUnique()) + " " + InitCaps(dg.LastName.NextUnique());
 			//	Console.WriteLine("{0}", name);
 			//}
+
+			var generatedNames = new HashSet<string>(dg.MaleFirstName.AllRaw(5));
+			var actualNames = new HashSet<string>(dg.MaleFirstName.OriginalNames.Where((x) => x.Length <= 5));
+			var added = generatedNames.Except(actualNames);
+			var removed = actualNames.Except(generatedNames);
+
+			Console.WriteLine("Added:");
+			foreach (var name in added) {
+				Console.WriteLine(name);
+			}
+
+			Console.WriteLine("Removed:");
+			foreach (var name in removed) {
+				Console.WriteLine(name);
+			}
+
 			Console.Read();
 		}
 		
