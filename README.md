@@ -28,8 +28,10 @@ Carlos
 Marlos
 Charlos
 ```
+The integer argument to the `Generator` constructor is the order of the Markov chain to use, that is, how many characters of history should be used in predicting the next character.
+Higher order chains are more realistic, but generally less creative.
 
-Sobriquet includes data from the 1990 US Census to get you started quickly.
+To get you started quickly, Sobriquet includes name data from the 1990 US Census.
 Here's an example of how to use these builtin names:
 ```cs
 var dg = new Sobriquet.DefaultGenerators(5);
@@ -43,3 +45,4 @@ ROBERT BROOKS
 ERIK LOPICCOLOMBOY
 MANUEL DESILVA
 ```
+Again, the numerical argument to the constructor is the order of the Markov chain.
