@@ -1,5 +1,5 @@
 # Sobriquet
-A very simple name generator.
+A very simple name generator for C#.
 It's a thin veneer on top of [Markov chains](https://en.wikipedia.org/wiki/Markov_chain) optimized for strings.
 Because it uses C# strings, it should be suitable for any names (or words) representable in Unicode.
 
